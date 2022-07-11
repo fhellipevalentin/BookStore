@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import lombok.Data;
 
 @Data
@@ -29,12 +31,17 @@ public class Livro {
 	@Column
 	private Double preco;
 	
+	@JsonBackReference
 	@ManyToMany
 	@JoinTable(name = "LIVRO_CATEGORIA",
 			joinColumns = @JoinColumn(name = "livro_id"),
 			inverseJoinColumns = @JoinColumn(name = "categoria_id"))
 	private List<Categoria> categorias = new ArrayList<>();
-
+	
+	public Livro() {
+		
+	}
+	
 	public Livro(Integer id, String titulo, String autor, Double preco) {
 		super();
 		this.id = id;

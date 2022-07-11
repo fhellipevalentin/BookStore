@@ -10,8 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.Data;
-import lombok.NonNull;
 
 @Entity
 @Data
@@ -24,14 +25,20 @@ public class Categoria {
 	@Column
 	private String nome;
 	
+	@JsonManagedReference
 	@ManyToMany(mappedBy="categorias")
-	@NonNull private List<Livro> livros= new ArrayList<Livro>();
+	private List<Livro> livros= new ArrayList<Livro>();
 
+	public Categoria() {
+		
+	}
+	
 	public Categoria(Integer id, String nome) {
 		super();
 		this.id = id;
 		this.nome = nome;
 	}
+	
 	
 	
 }
