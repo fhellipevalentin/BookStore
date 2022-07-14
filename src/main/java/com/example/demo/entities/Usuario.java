@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.example.demo.enums.TipoUsuario;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 
@@ -39,6 +40,7 @@ public class Usuario {
 	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy="usuario")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
