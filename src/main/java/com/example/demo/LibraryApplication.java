@@ -8,8 +8,12 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.entities.Categoria;
+import com.example.demo.entities.Cidade;
+import com.example.demo.entities.Estado;
 import com.example.demo.entities.Livro;
 import com.example.demo.entities.repository.CategoriaRepository;
+import com.example.demo.entities.repository.CidadeRepository;
+import com.example.demo.entities.repository.EstadoRepository;
 import com.example.demo.entities.repository.LivroRepository;
 
 @SpringBootApplication
@@ -20,6 +24,12 @@ public class LibraryApplication implements CommandLineRunner{
 	
 	@Autowired
 	private LivroRepository livroRepository;
+	
+	@Autowired
+	private EstadoRepository estadoRepository;
+	
+	@Autowired
+	private CidadeRepository cidadeRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryApplication.class, args);
@@ -41,5 +51,22 @@ public class LibraryApplication implements CommandLineRunner{
 		
 		categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
 		livroRepository.saveAll(Arrays.asList(l1, l2, l3));
+		
+		Estado est1 = new Estado(null, "São Paulo");
+		Estado est2 = new Estado(null, "Rio De Janeiro");
+		Estado est3 = new Estado(null, "Minas Gerais");
+		
+		Cidade c1 = new Cidade(null, "Uberlândia", est3);
+		Cidade c2 = new Cidade(null, "Rio de Janeiro", est2);
+		Cidade c3 = new Cidade(null, "Campinas", est1);
+		Cidade c4 = new Cidade(null, "São Paulo", est1);
+		
+		est1.getCidades().addAll(Arrays.asList(c3,c4));
+		est2.getCidades().addAll(Arrays.asList(c2));
+		est3.getCidades().addAll(Arrays.asList(c1));
+		
+		estadoRepository.saveAll(Arrays.asList(est1, est2, est3));
+		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
+		
 	}
 }
