@@ -9,12 +9,17 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.example.demo.entities.Categoria;
 import com.example.demo.entities.Cidade;
+import com.example.demo.entities.Endereco;
 import com.example.demo.entities.Estado;
 import com.example.demo.entities.Livro;
+import com.example.demo.entities.Usuario;
 import com.example.demo.entities.repository.CategoriaRepository;
 import com.example.demo.entities.repository.CidadeRepository;
+import com.example.demo.entities.repository.EnderecoRepository;
 import com.example.demo.entities.repository.EstadoRepository;
 import com.example.demo.entities.repository.LivroRepository;
+import com.example.demo.entities.repository.UsuarioRepository;
+import com.example.demo.enums.TipoUsuario;
 
 @SpringBootApplication
 public class LibraryApplication implements CommandLineRunner{
@@ -30,6 +35,12 @@ public class LibraryApplication implements CommandLineRunner{
 	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryApplication.class, args);
@@ -67,6 +78,18 @@ public class LibraryApplication implements CommandLineRunner{
 		
 		estadoRepository.saveAll(Arrays.asList(est1, est2, est3));
 		cidadeRepository.saveAll(Arrays.asList(c1, c2, c3, c4));
+		
+		Usuario usr1 = new Usuario(null, "Aurelio Silva", "aureliosilva@gmail.com", "36378912377", TipoUsuario.PESSOAFISICA);
+		
+		usr1.getTelefones().addAll(Arrays.asList("27363323", "945256321"));
+		
+		Endereco e1 = new Endereco(null, "Rua Genro", "120", "Apto303", "Jardim Verde", "01247890", usr1, c4);
+		Endereco e2 = new Endereco(null, "Rua da Praia", "210", "Sala 200", "Coqueiros", "02145800", usr1, c3);
+		
+		usr1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		usuarioRepository.saveAll(Arrays.asList(usr1));
+		enderecoRepository.saveAll(Arrays.asList(e1, e2));
 		
 	}
 }
