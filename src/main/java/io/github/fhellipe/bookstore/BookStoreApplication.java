@@ -1,13 +1,8 @@
 package io.github.fhellipe.bookstore;
 
-import io.github.fhellipe.bookstore.model.Categoria;
-import io.github.fhellipe.bookstore.model.Cidade;
-import io.github.fhellipe.bookstore.model.Estado;
-import io.github.fhellipe.bookstore.model.Livro;
-import io.github.fhellipe.bookstore.repositories.CategoriaRepository;
-import io.github.fhellipe.bookstore.repositories.CidadeRepository;
-import io.github.fhellipe.bookstore.repositories.EstadoRepository;
-import io.github.fhellipe.bookstore.repositories.LivroRepository;
+import io.github.fhellipe.bookstore.enums.TipoUsuario;
+import io.github.fhellipe.bookstore.model.*;
+import io.github.fhellipe.bookstore.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,6 +25,12 @@ public class BookStoreApplication implements CommandLineRunner {
 
     @Autowired
     private EstadoRepository estadoRepository;
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
@@ -63,5 +64,16 @@ public class BookStoreApplication implements CommandLineRunner {
 
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
+
+        Usuario usr1 = new Usuario(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoUsuario.PESSOAFISICA);
+        usr1.getTelefones().addAll(Arrays.asList("927363323", "993838393"));
+
+        Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", usr1, c1);
+        Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", usr1, c2);
+
+        usr1.getEnderecos().addAll(Arrays.asList(e1,e2));
+
+        usuarioRepository.saveAll(Arrays.asList(usr1));
+        enderecoRepository.saveAll(Arrays.asList(e1,e2));
     }
 }
