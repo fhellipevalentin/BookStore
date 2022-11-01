@@ -1,5 +1,7 @@
 package io.github.fhellipe.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ public class Livro implements Serializable {
     private Double preco;
     private String autor;
 
+    // omitir a lista de categorias para cada livro
+    @JsonBackReference
     @ManyToMany
     @JoinTable(name = "LIVRO_CATEGORIA",
                 joinColumns = @JoinColumn(name = "livro_id"),

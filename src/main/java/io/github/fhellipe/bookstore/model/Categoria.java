@@ -1,5 +1,7 @@
 package io.github.fhellipe.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -14,6 +16,8 @@ public class Categoria implements Serializable {
     private Integer id;
     private String nome;
 
+    // isso é feito para o lado que é preferencial que venham os objetos associados
+    @JsonManagedReference
     @ManyToMany(mappedBy = "categorias")
     private List<Livro> livros = new ArrayList<>();
 
