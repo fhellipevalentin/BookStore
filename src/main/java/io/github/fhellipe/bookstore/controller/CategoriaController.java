@@ -17,8 +17,6 @@ public class CategoriaController {
     @GetMapping("{id}")
     public ResponseEntity<?> find(@PathVariable Integer id) {
         Categoria obj = service.find(id);
-        if (obj == null) {
-        }
-            return ResponseEntity.ok().body(obj);
+        return ResponseEntity.ok().body(obj);
     }
 }

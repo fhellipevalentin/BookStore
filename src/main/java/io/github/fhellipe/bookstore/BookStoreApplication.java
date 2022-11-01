@@ -1,8 +1,12 @@
 package io.github.fhellipe.bookstore;
 
 import io.github.fhellipe.bookstore.model.Categoria;
+import io.github.fhellipe.bookstore.model.Cidade;
+import io.github.fhellipe.bookstore.model.Estado;
 import io.github.fhellipe.bookstore.model.Livro;
 import io.github.fhellipe.bookstore.repositories.CategoriaRepository;
+import io.github.fhellipe.bookstore.repositories.CidadeRepository;
+import io.github.fhellipe.bookstore.repositories.EstadoRepository;
 import io.github.fhellipe.bookstore.repositories.LivroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -20,6 +24,12 @@ public class BookStoreApplication implements CommandLineRunner {
 
     @Autowired
     private LivroRepository livroRepository;
+
+    @Autowired
+    private CidadeRepository cidadeRepository;
+
+    @Autowired
+    private EstadoRepository estadoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
@@ -40,5 +50,18 @@ public class BookStoreApplication implements CommandLineRunner {
 
         categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
         livroRepository.saveAll(Arrays.asList(l1, l2, l3));
+
+        Estado est1 = new Estado(null, "Minas Gerais");
+        Estado est2 = new Estado(null, "São Paulo");
+
+        Cidade c1 = new Cidade(null, "Uberlândia", est1);
+        Cidade c2 = new Cidade(null, "São Paulo", est2);
+        Cidade c3 = new Cidade(null, "Campinas", est2);
+
+        est1.getCidades().addAll(Arrays.asList(c1));
+        est2.getCidades().addAll(Arrays.asList(c2, c3));
+
+        estadoRepository.saveAll(Arrays.asList(est1, est2));
+        cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
     }
 }
