@@ -1,5 +1,6 @@
 package io.github.fhellipe.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.fhellipe.bookstore.enums.TipoUsuario;
 
 import javax.persistence.*;
@@ -25,6 +26,7 @@ public class Usuario implements Serializable {
 
     }
 
+    @JsonManagedReference
     @OneToMany(mappedBy="usuario")
     private List<Endereco> enderecos = new ArrayList<>();
 

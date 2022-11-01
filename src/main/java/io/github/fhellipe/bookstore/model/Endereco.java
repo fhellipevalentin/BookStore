@@ -1,5 +1,7 @@
 package io.github.fhellipe.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -20,6 +22,7 @@ public class Endereco implements Serializable {
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
