@@ -1,10 +1,9 @@
 package io.github.fhellipe.bookstore.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Categoria implements Serializable {
@@ -15,12 +14,23 @@ public class Categoria implements Serializable {
     private Integer id;
     private String nome;
 
+    @ManyToMany(mappedBy = "categorias")
+    private List<Livro> livros = new ArrayList<>();
+
     public Categoria() {
     }
 
     public Categoria(Integer id, String nome) {
         this.id = id;
         this.nome = nome;
+    }
+
+    public List<Livro> getLivros() {
+        return livros;
+    }
+
+    public void setLivros(List<Livro> livros) {
+        this.livros = livros;
     }
 
     public Integer getId() {
