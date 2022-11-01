@@ -75,12 +75,12 @@ public class Usuario implements Serializable {
         this.cpfOuCPNJ = cpfOuCPNJ;
     }
 
-    public Integer getTipo() {
-        return tipo;
+    public TipoUsuario getTipo() {
+        return TipoUsuario.toEnum(tipo);
     }
 
-    public void setTipo(Integer tipo) {
-        this.tipo = tipo;
+    public void setTipo(TipoUsuario tipo) {
+        this.tipo = tipo.getCod();
     }
 
     public List<Endereco> getEnderecos() {

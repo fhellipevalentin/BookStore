@@ -18,11 +18,11 @@ public class Endereco implements Serializable {
     private String bairro;
     private String cep;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name="usuario_id")
     private Usuario usuario;
 
-    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "cidade_id")
     private Cidade cidade;
