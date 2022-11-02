@@ -1,5 +1,6 @@
 package io.github.fhellipe.bookstore;
 
+import io.github.fhellipe.bookstore.enums.EstadoPagamento;
 import io.github.fhellipe.bookstore.enums.TipoUsuario;
 import io.github.fhellipe.bookstore.model.*;
 import io.github.fhellipe.bookstore.repositories.*;
@@ -8,6 +9,9 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,6 +35,12 @@ public class BookStoreApplication implements CommandLineRunner {
 
     @Autowired
     private EnderecoRepository enderecoRepository;
+
+    @Autowired
+    private PedidoRepository pedidoRepository;
+
+    @Autowired
+    private PagamentoRepository pagamentoRepository;
 
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
@@ -75,5 +85,19 @@ public class BookStoreApplication implements CommandLineRunner {
 
         usuarioRepository.saveAll(Arrays.asList(usr1));
         enderecoRepository.saveAll(Arrays.asList(e1,e2));
+
+        Pedido ped1 = new Pedido(null, LocalDateTime.parse("22/11/2022 10:35:10", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), usr1, e1);
+        Pedido ped2 = new Pedido(null, LocalDateTime.parse("20/11/2022 11:12:02", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), usr1, e2);
+
+        Pagamento pgto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+        Pagamento pgto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, null, LocalDateTime.parse("23/11/2022 11:12:02", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
+
+        ped1.setPagamento(pgto1);
+        ped2.setPagamento(pgto2);
+
+        usr1.getPedidos().addAll(Arrays.asList(ped1,ped2));
+
+        pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
+        pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
     }
 }
