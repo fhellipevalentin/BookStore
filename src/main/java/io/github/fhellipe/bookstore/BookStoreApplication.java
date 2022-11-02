@@ -42,6 +42,9 @@ public class BookStoreApplication implements CommandLineRunner {
     @Autowired
     private PagamentoRepository pagamentoRepository;
 
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
     }
@@ -99,5 +102,18 @@ public class BookStoreApplication implements CommandLineRunner {
 
         pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
         pagamentoRepository.saveAll(Arrays.asList(pgto1, pgto2));
+
+        ItemPedido ip1 = new ItemPedido(ped1, l1, 0.00, 1, 2000.00);
+        ItemPedido ip2 = new ItemPedido(ped1, l3, 0.00, 2, 80.00);
+        ItemPedido ip3 = new ItemPedido(ped2, l2, 100.00, 1, 800.00);
+
+        ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+        ped2.getItens().addAll(Arrays.asList(ip3));
+
+        l1.getItens().addAll(Arrays.asList(ip1));
+        l2.getItens().addAll(Arrays.asList(ip3));
+        l3.getItens().addAll(Arrays.asList(ip2));
+
+        itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));
     }
 }

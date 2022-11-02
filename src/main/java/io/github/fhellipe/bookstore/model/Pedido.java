@@ -3,6 +3,8 @@ package io.github.fhellipe.bookstore.model;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Pedido implements Serializable {
@@ -24,6 +26,10 @@ public class Pedido implements Serializable {
     @JoinColumn(name = "endereco_entrega_id")
     private Endereco enderecoEntrega;
 
+    // as classes não estão diretamente associadas, portanto usa-se a ligação entre eles
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
+
     public Pedido() {
 
     }
@@ -33,6 +39,14 @@ public class Pedido implements Serializable {
         this.instante = instante;
         this.usuario = usuario;
         this.enderecoEntrega = enderecoEntrega;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     public Endereco getEnderecoEntrega() {

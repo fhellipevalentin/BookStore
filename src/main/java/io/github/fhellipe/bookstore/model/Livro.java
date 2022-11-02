@@ -4,9 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 @Entity
 public class Livro implements Serializable {
@@ -18,6 +16,10 @@ public class Livro implements Serializable {
     private String titulo;
     private Double preco;
     private String autor;
+
+    // as classes não estão diretamente associadas, portanto usa-se a ligação entre eles
+    @OneToMany(mappedBy="id.livro")
+    private Set<ItemPedido> itens = new HashSet<>();
 
     // omitir a lista de categorias para cada livro
     @JsonBackReference
@@ -36,6 +38,22 @@ public class Livro implements Serializable {
         this.titulo = titulo;
         this.autor = autor;
         this.preco = preco;
+    }
+
+    public List<Pedido> getPedidos() {
+        List<Pedido> lista = new ArrayList<>();
+        for (ItemPedido x : itens) {
+            lista.add(x.getPedido());
+        }
+        return lista;
+    }
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(Set<ItemPedido> itens) {
+        this.itens = itens;
     }
 
     public List<Categoria> getCategorias() {
