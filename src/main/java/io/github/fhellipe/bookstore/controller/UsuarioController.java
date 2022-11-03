@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping(value = "/api/usuarios")
-public class ClienteController {
+public class UsuarioController {
 
     @Autowired
     private UsuarioService service;
 
     @GetMapping("{id}")
-    public ResponseEntity<?> find(@PathVariable Integer id) {
+    public ResponseEntity<Usuario> find(@PathVariable Integer id) {
         Usuario obj = service.buscar(id);
         return ResponseEntity.ok().body(obj);
     }
