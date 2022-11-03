@@ -43,7 +43,7 @@ public class Usuario implements Serializable {
         this.nome = nome;
         this.email = email;
         this.cpfOuCPNJ = cpfOuCPNJ;
-        this.tipo = tipo.getCod();
+        this.tipo = (tipo==null) ? null : tipo.getCod();
     }
 
     public Integer getId() {
