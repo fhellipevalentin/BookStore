@@ -1,6 +1,5 @@
 package io.github.fhellipe.bookstore.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -24,7 +23,7 @@ public class Livro implements Serializable {
     private Set<ItemPedido> itens = new HashSet<>();
 
     // omitir a lista de categorias para cada livro
-    @JsonBackReference
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "LIVRO_CATEGORIA",
                 joinColumns = @JoinColumn(name = "livro_id"),
