@@ -1,5 +1,6 @@
 package io.github.fhellipe.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.fhellipe.bookstore.enums.EstadoPagamento;
 
@@ -16,6 +17,7 @@ public abstract class Pagamento implements Serializable {
     private Integer id;
     private Integer estadoPagamento;
 
+    @JsonBackReference
     @MapsId
     @OneToOne
     @JoinColumn(name = "pedido_id")

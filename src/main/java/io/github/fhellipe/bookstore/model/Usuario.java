@@ -1,5 +1,6 @@
 package io.github.fhellipe.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.github.fhellipe.bookstore.enums.TipoUsuario;
 
@@ -22,6 +23,7 @@ public class Usuario implements Serializable {
     private String cpfOuCPNJ;
     private Integer tipo;
 
+    @JsonBackReference
     @OneToMany(mappedBy = "usuario")
     private List<Pedido> pedidos = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package io.github.fhellipe.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,6 +19,7 @@ public class Livro implements Serializable {
     private String autor;
 
     // as classes não estão diretamente associadas, portanto usa-se a ligação entre eles
+    @JsonIgnore
     @OneToMany(mappedBy="id.livro")
     private Set<ItemPedido> itens = new HashSet<>();
 
@@ -40,6 +42,7 @@ public class Livro implements Serializable {
         this.preco = preco;
     }
 
+    @JsonIgnore
     public List<Pedido> getPedidos() {
         List<Pedido> lista = new ArrayList<>();
         for (ItemPedido x : itens) {
