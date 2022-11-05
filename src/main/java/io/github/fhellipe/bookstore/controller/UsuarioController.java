@@ -2,6 +2,7 @@ package io.github.fhellipe.bookstore.controller;
 
 import io.github.fhellipe.bookstore.dto.CategoriaDTO;
 import io.github.fhellipe.bookstore.dto.UsuarioDTO;
+import io.github.fhellipe.bookstore.dto.UsuarioNewDTO;
 import io.github.fhellipe.bookstore.model.Categoria;
 import io.github.fhellipe.bookstore.model.Usuario;
 import io.github.fhellipe.bookstore.services.UsuarioService;
@@ -30,9 +31,10 @@ public class UsuarioController {
         return ResponseEntity.ok().body(obj);
     }
 
-    @PostMapping()
-    public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioDTO objDTO) {
-        Usuario obj = service.fromDTO(objDTO);
+    @PostMapping
+    public ResponseEntity<Void> insert(@Valid @RequestBody UsuarioNewDTO objDto) {
+        Usuario obj = service.fromDTO(objDto);
+        obj = service.insert(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).build();
