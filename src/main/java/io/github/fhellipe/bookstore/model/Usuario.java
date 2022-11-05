@@ -25,8 +25,8 @@ public class Usuario implements Serializable {
     @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Pedido> pedidos = new ArrayList<>();
-
-    @OneToMany(mappedBy="usuario")
+    // essa instrução permite ao JPA deletar todas as entidades de um para muitos seren deletadas em cascata
+    @OneToMany(mappedBy="usuario", cascade = CascadeType.ALL)
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection

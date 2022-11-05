@@ -57,7 +57,7 @@ public class UsuarioService {
             repository.deleteById(id);
         }
         catch (DataIntegrityViolationException e) {
-            throw new DataIntegrityException("Não é possível excluir um cliente que possui entidades relacionadas a ele");
+            throw new DataIntegrityException("Não é possível excluir um cliente que possui pedidos relacionados a ele");
         }
     }
 
