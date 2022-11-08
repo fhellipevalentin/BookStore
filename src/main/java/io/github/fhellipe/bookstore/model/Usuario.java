@@ -18,6 +18,8 @@ public class Usuario implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     private String nome;
+
+    @Column(unique=true)
     private String email;
     private String cpfOuCPNJ;
     private Integer tipo;
