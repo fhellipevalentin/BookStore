@@ -51,19 +51,46 @@ public class BookStoreApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        Categoria cat1 = new Categoria(null, "Comércio");
-        Categoria cat2 = new Categoria(null, "Jurídicos");
+        Categoria cat1 = new Categoria(null, "Economia");
+        Categoria cat2 = new Categoria(null, "Teórico");
+        Categoria cat3 = new Categoria(null, "Literatura Jurídica");
+        Categoria cat4 = new Categoria(null, "Biografias");
 
         Livro l1 = new Livro(null, "Juridico e Minha vida", "Jurencio", 80.00);
         Livro l2 = new Livro(null, "As Cronicas do Comércio", "Comerciante Anônimo", 24.00);
         Livro l3 = new Livro(null, "Suits, uma licao para a Vida", "Maguire Goodman", 56.00);
+        Livro l4 = new Livro(null, "O Júri", "John Grisham", 50.60);
+        Livro l5 = new Livro(null, "O Primeiro Ano: Como Se Faz Um Advogado", "Scott Turow", 47.40);
+        Livro l6 = new Livro(null, "Justiça: o que é a coisa certa a fazer", "Michael J. Sandel", 33.80);
+        Livro l7 = new Livro(null, "Contra o sistema da corrupção", "Sergio Moro", 29.99);
+        Livro l8 = new Livro(null, "Desapropriação", "Manoel de Oliveira Franco Sobrinho", 104.00);
+        Livro l9 = new Livro(null, "Manual de Direito Penal", "Guilherme de Souza Nucci", 227.98);
+        Livro l10 = new Livro(null, "Direito Civil Brasileiro", "Carlos Roberto Gonçalves", 82.80);
+        Livro l11 = new Livro(null, "Direito Digital e Proteção de Dados", "Patricia Peck Pinheiro", 165.95);
+        Livro l12 = new Livro(null, "Clóvis Beviláqua: sua vida, sua obra", "Sílvio Meira", 30.00);
+        Livro l13 = new Livro(null, "Ação Humana", "Ludwing Von Mises", 249.90);
+        Livro l14 = new Livro(null, "The Theory of Money and Credit", "Ludwing Von Mises", 156.00);
+        Livro l15 = new Livro(null, "A Teoria Comunista do Direito", "Hans Kelsen", 37.40);
 
         l1.getCategorias().addAll(Arrays.asList(cat2));
         l2.getCategorias().addAll(Arrays.asList(cat1));
-        l3.getCategorias().addAll(Arrays.asList(cat1));
+        l3.getCategorias().addAll(Arrays.asList(cat2));
+        l4.getCategorias().addAll(Arrays.asList(cat3));
+        l5.getCategorias().addAll(Arrays.asList(cat2));
+        l6.getCategorias().addAll(Arrays.asList(cat2));
+        l7.getCategorias().addAll(Arrays.asList(cat4));
+        l8.getCategorias().addAll(Arrays.asList(cat2));
+        l9.getCategorias().addAll(Arrays.asList(cat2));
+        l10.getCategorias().addAll(Arrays.asList(cat2));
+        l11.getCategorias().addAll(Arrays.asList(cat2));
+        l12.getCategorias().addAll(Arrays.asList(cat4));
+        l13.getCategorias().addAll(Arrays.asList(cat1));
+        l14.getCategorias().addAll(Arrays.asList(cat1));
+        l15.getCategorias().addAll(Arrays.asList(cat3));
 
-        categoriaRepository.saveAll(Arrays.asList(cat1, cat2));
-        livroRepository.saveAll(Arrays.asList(l1, l2, l3));
+
+        categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3, cat4));
+        livroRepository.saveAll(Arrays.asList(l1, l2, l3, l4, l5, l4, l6, l7, l8, l9, l10, l11, l12, l13, l14, l15));
 
         Estado est1 = new Estado(null, "Minas Gerais");
         Estado est2 = new Estado(null, "São Paulo");

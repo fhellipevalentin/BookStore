@@ -1,10 +1,13 @@
 package io.github.fhellipe.bookstore.dto;
 
 import io.github.fhellipe.bookstore.model.Usuario;
+import io.github.fhellipe.bookstore.services.validation.UsuarioUpdate;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
+
+@UsuarioUpdate
 public class UsuarioDTO {
 
     private Integer id;
