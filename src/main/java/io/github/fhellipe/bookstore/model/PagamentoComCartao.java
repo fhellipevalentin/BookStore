@@ -1,11 +1,13 @@
 package io.github.fhellipe.bookstore.model;
 
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.github.fhellipe.bookstore.enums.EstadoPagamento;
 
 import javax.persistence.Entity;
 import java.util.Objects;
 
 @Entity
+@JsonTypeName("pagamentoComCartao")
 public class PagamentoComCartao extends Pagamento{
 
     private Integer numeroDeParcelas;

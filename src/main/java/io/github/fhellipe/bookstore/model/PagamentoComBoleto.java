@@ -1,6 +1,7 @@
 package io.github.fhellipe.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import io.github.fhellipe.bookstore.enums.EstadoPagamento;
 
 import javax.persistence.Entity;
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
+@JsonTypeName("pagamentoComBoleto")
 public class PagamentoComBoleto extends Pagamento{
 
     @JsonFormat(pattern="dd/MM/yyyy HH:mm")

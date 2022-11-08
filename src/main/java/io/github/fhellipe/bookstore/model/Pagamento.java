@@ -1,6 +1,7 @@
 package io.github.fhellipe.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import io.github.fhellipe.bookstore.enums.EstadoPagamento;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import java.io.Serializable;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") // campo adicional
 public abstract class Pagamento implements Serializable {
     private static final long serialVersionUID = 1L;
 

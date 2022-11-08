@@ -2,12 +2,16 @@ package io.github.fhellipe.bookstore.controller;
 
 import io.github.fhellipe.bookstore.model.Livro;
 import io.github.fhellipe.bookstore.model.LivroDTO;
+import io.github.fhellipe.bookstore.model.Pedido;
 import io.github.fhellipe.bookstore.services.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -17,7 +21,7 @@ public class LivroController {
     @Autowired
     private LivroService service;
 
-    @RequestMapping(value="/{id}", method= RequestMethod.GET)
+    @GetMapping("/{id}")
     public ResponseEntity<Livro> find(@PathVariable Integer id) {
         Livro obj = service.find(id);
         return ResponseEntity.ok().body(obj);
