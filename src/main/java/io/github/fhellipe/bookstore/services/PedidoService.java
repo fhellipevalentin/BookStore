@@ -7,6 +7,7 @@ import io.github.fhellipe.bookstore.model.Pedido;
 import io.github.fhellipe.bookstore.repositories.ItemPedidoRepository;
 import io.github.fhellipe.bookstore.repositories.PagamentoRepository;
 import io.github.fhellipe.bookstore.repositories.PedidoRepository;
+import io.github.fhellipe.bookstore.repositories.UsuarioRepository;
 import io.github.fhellipe.bookstore.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class PedidoService {
     @Autowired
     private LivroService livroService;
 
+    @Autowired
+    private UsuarioService usuarioService;
+
     public Pedido find(Integer id) {
         Optional<Pedido> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
@@ -41,6 +45,7 @@ public class PedidoService {
     public Pedido insert(Pedido obj) {
         obj.setId(null);
         obj.setInstante(LocalDateTime.now());
+        obj.setUsuario(usuarioService.find(obj.getUsuario().getId()));
         obj.getPagamento().setEstadoPagamento(EstadoPagamento.PENDENTE);
         obj.getPagamento().setPedido(obj);
         if (obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -51,10 +56,12 @@ public class PedidoService {
         pagamentoRepository.save(obj.getPagamento());
         for (ItemPedido ip : obj.getItens()) {
             ip.setDesconto(0.0);
-            ip.setPreco(livroService.find(ip.getLivro().getId()).getPreco());
+            ip.setLivro(livroService.find(ip.getLivro().getId()));
+            ip.setPreco(ip.getLivro().getPreco());
             ip.setPedido(obj);
         }
         itemPedidoRepository.saveAll(obj.getItens());
+        System.out.println(obj);
         return obj;
     }
 }
