@@ -5,6 +5,7 @@ import io.github.fhellipe.bookstore.enums.TipoUsuario;
 import io.github.fhellipe.bookstore.model.*;
 import io.github.fhellipe.bookstore.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -25,6 +26,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Service
 public class DBService {
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     private CategoriaRepository categoriaRepository;
@@ -109,7 +113,7 @@ public class DBService {
         estadoRepository.saveAll(Arrays.asList(est1, est2));
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
-        Usuario usr1 = new Usuario(null, "Maria Silva", "fhellipereis@outlook.com", "36378912377", TipoUsuario.PESSOAFISICA);
+        Usuario usr1 = new Usuario(null, "Maria Silva", "fhellipereis@outlook.com", "36378912377", TipoUsuario.PESSOAFISICA, passwordEncoder.encode("122"));
         usr1.getTelefones().addAll(Arrays.asList("927363323", "993838393"));
 
         Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", usr1, c1);

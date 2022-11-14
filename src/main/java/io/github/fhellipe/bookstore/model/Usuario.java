@@ -25,6 +25,9 @@ public class Usuario implements Serializable {
     private Integer tipo;
 
     @JsonIgnore
+    private String senha;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "usuario")
     private List<Pedido> pedidos = new ArrayList<>();
     // essa instrução permite ao JPA deletar todas as entidades de um para muitos seren deletadas em cascata
@@ -39,13 +42,14 @@ public class Usuario implements Serializable {
 
     }
 
-    public Usuario(Integer id, String nome, String email, String cpfOuCPNJ, TipoUsuario tipo) {
+    public Usuario(Integer id, String nome, String email, String cpfOuCPNJ, TipoUsuario tipo, String senha) {
         super();
         this.id = id;
         this.nome = nome;
         this.email = email;
         this.cpfOuCPNJ = cpfOuCPNJ;
         this.tipo = (tipo==null) ? null : tipo.getCod();
+        this.senha = senha;
     }
 
     public Integer getId() {
@@ -86,6 +90,14 @@ public class Usuario implements Serializable {
 
     public void setTipo(TipoUsuario tipo) {
         this.tipo = tipo.getCod();
+    }
+
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
     }
 
     public List<Endereco> getEnderecos() {
