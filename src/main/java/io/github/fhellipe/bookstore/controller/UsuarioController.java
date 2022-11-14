@@ -9,6 +9,7 @@ import io.github.fhellipe.bookstore.services.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -47,20 +48,20 @@ public class UsuarioController {
         service.update(obj);
         return ResponseEntity.noContent().build();
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<UsuarioDTO>> findAll() {
         List<Usuario> list = service.findAll();
         List<UsuarioDTO> listDto = list.stream().map(obj -> new UsuarioDTO(obj)).collect(Collectors.toList());
         return ResponseEntity.ok().body(listDto);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/page")
     public ResponseEntity<Page<UsuarioDTO>> findPage(
             @RequestParam(value="page", defaultValue="0") Integer page,

@@ -26,6 +26,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Environment env;
@@ -42,8 +43,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_MATCHERS_GET = {
             "/api/livro/**",
-            "/api/categorias/**",
-            "/api/usuarios/**"
+            "/api/categorias/**"
+    };
+
+    private static final String[] PUBLIC_MATCHERS_POST = {
+            "/usuarios/**"
     };
 
     @Override
@@ -56,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable();
         http.authorizeHttpRequests()
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
+                .antMatchers(HttpMethod.POST, PUBLIC_MATCHERS_POST).permitAll()
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
