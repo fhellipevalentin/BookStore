@@ -25,8 +25,9 @@ public class SecurityConfig{
     };
 
     private static final String[] PUBLIC_MATCHERS_GET = {
-            "/livro/**",
-            "/categorias/**"
+            "/api/livro/**",
+            "/api/categorias/**",
+            "/api/usuarios/**"
     };
 
     @Bean

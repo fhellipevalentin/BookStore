@@ -1,7 +1,6 @@
 package io.github.fhellipe.bookstore.services;
 
-import io.github.fhellipe.bookstore.enums.EstadoPagamento;
-import io.github.fhellipe.bookstore.enums.TipoUsuario;
+import io.github.fhellipe.bookstore.enums.*;
 import io.github.fhellipe.bookstore.model.*;
 import io.github.fhellipe.bookstore.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -114,15 +113,20 @@ public class DBService {
         cidadeRepository.saveAll(Arrays.asList(c1, c2, c3));
 
         Usuario usr1 = new Usuario(null, "Maria Silva", "fhellipereis@outlook.com", "36378912377", TipoUsuario.PESSOAFISICA, passwordEncoder.encode("122"));
+        Usuario usr2 = new Usuario(null, "Ademir Mattos", "fhellipereis@gmail.com", "31775873021", TipoUsuario.PESSOAFISICA, passwordEncoder.encode("122"));
         usr1.getTelefones().addAll(Arrays.asList("927363323", "993838393"));
+        usr2.addPerfil(Perfil.ADMIN);
+        usr2.getTelefones().addAll(Arrays.asList("965512112"));
 
         Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", usr1, c1);
         Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", usr1, c2);
+        Endereco e3 = new Endereco(null, "Rua 4 de Março", "14", "", "Vila Catalena", "32165445", usr2, c3);
 
         usr1.getEnderecos().addAll(Arrays.asList(e1, e2));
+        usr2.getEnderecos().addAll(Arrays.asList(e3));
 
-        usuarioRepository.saveAll(Arrays.asList(usr1));
-        enderecoRepository.saveAll(Arrays.asList(e1, e2));
+        usuarioRepository.saveAll(Arrays.asList(usr1, usr2));
+        enderecoRepository.saveAll(Arrays.asList(e1, e2, e3));
 
         Pedido ped1 = new Pedido(null, LocalDateTime.parse("22/11/2022 10:35:10", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), usr1, e1);
         Pedido ped2 = new Pedido(null, LocalDateTime.parse("20/11/2022 11:12:02", DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")), usr1, e2);

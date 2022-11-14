@@ -1,6 +1,7 @@
 package io.github.fhellipe.bookstore.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.fhellipe.bookstore.enums.Perfil;
 import io.github.fhellipe.bookstore.enums.TipoUsuario;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 public class Usuario implements Serializable {
@@ -38,8 +40,13 @@ public class Usuario implements Serializable {
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
-    public Usuario() {
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "PERFIS")
+    private Set<Integer> perfis = new HashSet<>();
 
+    public Usuario() {
+        // qualquer registro de usuario na base de dados, já vem com privilégios de cliente
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Usuario(Integer id, String nome, String email, String cpfOuCPNJ, TipoUsuario tipo, String senha) {
@@ -50,6 +57,7 @@ public class Usuario implements Serializable {
         this.cpfOuCPNJ = cpfOuCPNJ;
         this.tipo = (tipo==null) ? null : tipo.getCod();
         this.senha = senha;
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Integer getId() {
@@ -114,6 +122,14 @@ public class Usuario implements Serializable {
 
     public void setTelefones(Set<String> telefones) {
         this.telefones = telefones;
+    }
+
+    public Set<Perfil> getPerfis() {
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil perfil) {
+        perfis.add(perfil.getCod());
     }
 
     public List<Pedido> getPedidos() {
