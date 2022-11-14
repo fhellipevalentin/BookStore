@@ -1,6 +1,7 @@
 package io.github.fhellipe.bookstore.config;
 
 import io.github.fhellipe.bookstore.security.JWTAuthenticationFilter;
+import io.github.fhellipe.bookstore.security.JWTAuthorizationFilter;
 import io.github.fhellipe.bookstore.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -59,6 +60,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
     }
 
     @Bean
