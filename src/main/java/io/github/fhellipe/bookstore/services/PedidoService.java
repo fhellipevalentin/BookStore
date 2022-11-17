@@ -4,12 +4,17 @@ import io.github.fhellipe.bookstore.enums.EstadoPagamento;
 import io.github.fhellipe.bookstore.model.ItemPedido;
 import io.github.fhellipe.bookstore.model.PagamentoComBoleto;
 import io.github.fhellipe.bookstore.model.Pedido;
+import io.github.fhellipe.bookstore.model.Usuario;
 import io.github.fhellipe.bookstore.repositories.ItemPedidoRepository;
 import io.github.fhellipe.bookstore.repositories.PagamentoRepository;
 import io.github.fhellipe.bookstore.repositories.PedidoRepository;
-import io.github.fhellipe.bookstore.repositories.UsuarioRepository;
+import io.github.fhellipe.bookstore.security.UserSS;
+import io.github.fhellipe.bookstore.services.exceptions.AuthorizationException;
 import io.github.fhellipe.bookstore.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -66,5 +71,15 @@ public class PedidoService {
         itemPedidoRepository.saveAll(obj.getItens());
         emailService.sendOrderConfirmationHtmlEmail(obj);
         return obj;
+    }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
+        UserSS user = UserService.authenticated();
+        if (user == null) {
+            throw new AuthorizationException("Acesso negado");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        Usuario usuario =  usuarioService.find(user.getId());
+        return repository.findByUsuario(usuario, pageRequest);
     }
 }
