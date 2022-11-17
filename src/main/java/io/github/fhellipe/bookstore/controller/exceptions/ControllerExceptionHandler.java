@@ -1,5 +1,6 @@
 package io.github.fhellipe.bookstore.controller.exceptions;
 
+import io.github.fhellipe.bookstore.services.exceptions.AuthorizationException;
 import io.github.fhellipe.bookstore.services.exceptions.DataIntegrityException;
 import io.github.fhellipe.bookstore.services.exceptions.ObjectNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -34,6 +35,13 @@ public class ControllerExceptionHandler {
             err.addError(x.getField(), x.getDefaultMessage());
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
+    }
+
+    @ExceptionHandler(AuthorizationException.class)
+    public ResponseEntity<StandardError> dataIntegrity(AuthorizationException e, HttpServletRequest request) {
+
+        StandardError err = new StandardError(HttpStatus.FORBIDDEN.value(), e.getMessage(), System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(err);
     }
 
 }

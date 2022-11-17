@@ -2,6 +2,7 @@ package io.github.fhellipe.bookstore.services;
 
 import io.github.fhellipe.bookstore.dto.UsuarioDTO;
 import io.github.fhellipe.bookstore.dto.UsuarioNewDTO;
+import io.github.fhellipe.bookstore.enums.Perfil;
 import io.github.fhellipe.bookstore.enums.TipoUsuario;
 import io.github.fhellipe.bookstore.model.Cidade;
 import io.github.fhellipe.bookstore.model.Endereco;
@@ -9,6 +10,8 @@ import io.github.fhellipe.bookstore.model.Usuario;
 import io.github.fhellipe.bookstore.model.Usuario;
 import io.github.fhellipe.bookstore.repositories.EnderecoRepository;
 import io.github.fhellipe.bookstore.repositories.UsuarioRepository;
+import io.github.fhellipe.bookstore.security.UserSS;
+import io.github.fhellipe.bookstore.services.exceptions.AuthorizationException;
 import io.github.fhellipe.bookstore.services.exceptions.DataIntegrityException;
 import io.github.fhellipe.bookstore.services.exceptions.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,12 @@ public class UsuarioService {
     private EnderecoRepository enderecoRepository;
 
     public Usuario find(Integer id) {
+
+        UserSS user = UserService.authenticated();
+        if ( user == null || user.hashRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+            throw new AuthorizationException("Acesso Negado!");
+        }
+
         Optional<Usuario> obj = repository.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException(
                 "Objeto não encontrado! Id: " + id + ", Tipo: " + Usuario.class.getName()));
