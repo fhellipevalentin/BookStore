@@ -1,6 +1,7 @@
 package io.github.fhellipe.bookstore.services;
 
 import io.github.fhellipe.bookstore.model.Pedido;
+import io.github.fhellipe.bookstore.model.Usuario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
@@ -66,5 +67,21 @@ public abstract class AbsctractMailService implements EmailService{
         mmh.setSentDate(new Date(System.currentTimeMillis()));
         mmh.setText(htmlFromTemplatePedido(obj), true);
         return mimeMessage;
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Usuario usuario, String newPass) {
+        SimpleMailMessage sm = prepareNewPasswordEmail(usuario, newPass);
+        sendEmail(sm);
+    }
+
+    protected SimpleMailMessage prepareNewPasswordEmail(Usuario usuario, String newPass) {
+        SimpleMailMessage sm = new SimpleMailMessage();
+        sm.setTo(usuario.getEmail());
+        sm.setFrom(sender);
+        sm.setSubject("Solicitação de nova senha");
+        sm.setSentDate(new Date(System.currentTimeMillis()));
+        sm.setText("Nova senha: " + newPass);
+        return sm;
     }
 }
