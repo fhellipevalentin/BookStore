@@ -77,7 +77,7 @@ public class UsuarioController {
         Page<UsuarioDTO> listDto = list.map(obj -> new UsuarioDTO(obj));
         return ResponseEntity.ok().body(listDto);
     }
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("{id}/foto")
     public byte[ ] addPhoto( @PathVariable Integer id, @RequestParam("foto") Part arquivo) {
         Optional<Usuario> contato = Optional.ofNullable(service.find(id));

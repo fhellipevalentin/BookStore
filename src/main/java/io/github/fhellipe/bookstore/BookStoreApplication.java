@@ -13,6 +13,7 @@ public class BookStoreApplication implements CommandLineRunner {
 
     public static void main(String[] args) {
         SpringApplication.run(BookStoreApplication.class, args);
+
     }
 
     @Override
