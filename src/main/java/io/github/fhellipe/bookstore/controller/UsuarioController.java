@@ -6,6 +6,7 @@ import io.github.fhellipe.bookstore.dto.UsuarioNewDTO;
 import io.github.fhellipe.bookstore.model.Categoria;
 import io.github.fhellipe.bookstore.model.Usuario;
 import io.github.fhellipe.bookstore.services.UsuarioService;
+import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -13,9 +14,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.servlet.http.Part;
 import javax.validation.Valid;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -71,5 +76,23 @@ public class UsuarioController {
         Page<Usuario> list = service.findPage(page, linesPerPage, orderBy, direction);
         Page<UsuarioDTO> listDto = list.map(obj -> new UsuarioDTO(obj));
         return ResponseEntity.ok().body(listDto);
+    }
+
+    @PutMapping("{id}/foto")
+    public byte[ ] addPhoto( @PathVariable Integer id, @RequestParam("foto") Part arquivo) {
+        Optional<Usuario> contato = Optional.ofNullable(service.find(id));
+        return contato.map( c -> {
+            try {
+                InputStream is = arquivo.getInputStream();
+                byte[] bytes = new byte[(int) arquivo.getSize()];
+                IOUtils.readFully( is, bytes );
+                c.setFoto(bytes);
+                is.close();
+                return bytes;
+            }
+            catch (IOException e) {
+                return null;
+            }
+        }).orElse(null);
     }
 }
