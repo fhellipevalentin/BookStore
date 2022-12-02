@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.Part;
@@ -76,23 +77,5 @@ public class UsuarioController {
         Page<Usuario> list = service.findPage(page, linesPerPage, orderBy, direction);
         Page<UsuarioDTO> listDto = list.map(obj -> new UsuarioDTO(obj));
         return ResponseEntity.ok().body(listDto);
-    }
-    @PreAuthorize("hasAnyRole('ADMIN')")
-    @PutMapping("{id}/foto")
-    public byte[ ] addPhoto( @PathVariable Integer id, @RequestParam("foto") Part arquivo) {
-        Optional<Usuario> contato = Optional.ofNullable(service.find(id));
-        return contato.map( c -> {
-            try {
-                InputStream is = arquivo.getInputStream();
-                byte[] bytes = new byte[(int) arquivo.getSize()];
-                IOUtils.readFully( is, bytes );
-                c.setFoto(bytes);
-                is.close();
-                return bytes;
-            }
-            catch (IOException e) {
-                return null;
-            }
-        }).orElse(null);
     }
 }

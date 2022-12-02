@@ -44,9 +44,6 @@ public class Usuario implements Serializable {
     @CollectionTable(name = "PERFIS")
     private Set<Integer> perfis = new HashSet<>();
 
-    @Lob
-    private byte[] foto;
-
     public Usuario() {
         // qualquer registro de usuario na base de dados, já vem com privilégios de cliente
         addPerfil(Perfil.CLIENTE);
@@ -141,14 +138,6 @@ public class Usuario implements Serializable {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
-    }
-
-    public byte[] getFoto() {
-        return foto;
-    }
-
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
     }
 
     @Override
