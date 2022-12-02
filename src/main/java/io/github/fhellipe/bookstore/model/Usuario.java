@@ -44,6 +44,8 @@ public class Usuario implements Serializable {
     @CollectionTable(name = "PERFIS")
     private Set<Integer> perfis = new HashSet<>();
 
+    private String imageUrl;
+
     public Usuario() {
         // qualquer registro de usuario na base de dados, já vem com privilégios de cliente
         addPerfil(Perfil.CLIENTE);
@@ -138,6 +140,14 @@ public class Usuario implements Serializable {
 
     public void setPedidos(List<Pedido> pedidos) {
         this.pedidos = pedidos;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 
     @Override
