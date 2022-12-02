@@ -78,4 +78,10 @@ public class UsuarioController {
         Page<UsuarioDTO> listDto = list.map(obj -> new UsuarioDTO(obj));
         return ResponseEntity.ok().body(listDto);
     }
+
+    @PostMapping("/picture")
+    public ResponseEntity<Void> uploadProfilePicture(@RequestParam(name="file") MultipartFile file) {
+        URI uri = service.uploadProfilePicture(file);
+        return ResponseEntity.created(uri).build();
+    }
 }

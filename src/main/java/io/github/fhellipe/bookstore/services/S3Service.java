@@ -1,7 +1,5 @@
 package io.github.fhellipe.bookstore.services;
 
-import com.amazonaws.AmazonClientException;
-import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
@@ -10,11 +8,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 @Service
 public class S3Service {
@@ -27,29 +26,31 @@ public class S3Service {
     @Value("${s3.bucket}")
     private String bucketName;
 
-    @Value("${aws.secret_access_key}")
-    private String keyName;
+    public URI uploadFile(MultipartFile multipartFile) {
+        try {
+            String fileName = multipartFile.getOriginalFilename();
+            InputStream is = multipartFile.getInputStream();
+            String contentType = multipartFile.getContentType();
+            return uploadFile(is, fileName, contentType);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro de IO: " + e.getMessage());
+        }
+    }
 
-    public void uploadFile(String localFilePath) {
-        File file = new File(localFilePath);
-        LOG.info("Iniciando upload");
-        try (final InputStream stream = new FileInputStream(file)) {
+    public URI uploadFile(InputStream is, String localFilePath, String contentType) {
+
+        try {
+            LOG.info("Iniciando upload");
             ObjectMetadata metadata = new ObjectMetadata();
-            metadata.setContentLength(file.length());
+            metadata.setContentType(contentType);
             s3client.putObject(
-                    new PutObjectRequest(bucketName, file.getName(), stream, metadata)
+                    new PutObjectRequest(bucketName, localFilePath, is, metadata)
             );
             LOG.info("Upload finalizado");
+            return s3client.getUrl(bucketName, localFilePath).toURI();
         }
-        catch (AmazonServiceException e) {
-            LOG.info("AmazonServiceException: " + e.getErrorMessage());
-            LOG.info("Status code: " + e.getErrorCode());
-        }
-        catch (AmazonClientException e) {
-            LOG.info("AmazonClientException: " +  e.getMessage());
-        }
-        catch (IOException e) {
-            LOG.info("IOExcpetion: " + e.getMessage());
+        catch (URISyntaxException e) {
+            throw new RuntimeException("Erro ao converter URL para URI");
         }
     }
 }
