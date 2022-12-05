@@ -1,17 +1,13 @@
 package io.github.fhellipe.bookstore.controller;
 
 import io.github.fhellipe.bookstore.model.Livro;
-import io.github.fhellipe.bookstore.model.LivroDTO;
-import io.github.fhellipe.bookstore.model.Pedido;
+import io.github.fhellipe.bookstore.dto.LivroDTO;
 import io.github.fhellipe.bookstore.services.LivroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import javax.validation.Valid;
-import java.net.URI;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")

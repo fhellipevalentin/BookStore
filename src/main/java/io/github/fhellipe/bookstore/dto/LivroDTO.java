@@ -1,4 +1,6 @@
-package io.github.fhellipe.bookstore.model;
+package io.github.fhellipe.bookstore.dto;
+
+import io.github.fhellipe.bookstore.model.Livro;
 
 public class LivroDTO {
 
