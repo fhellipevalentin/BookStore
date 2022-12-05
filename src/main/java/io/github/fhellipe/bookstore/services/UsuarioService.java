@@ -57,7 +57,7 @@ public class UsuarioService {
     public Usuario find(Integer id) {
 
         UserSS user = UserService.authenticated();
-        if ( user == null || user.hashRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+        if ( user == null || user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
             throw new AuthorizationException("Acesso Negado!");
         }
 
@@ -135,5 +135,19 @@ public class UsuarioService {
 
         String fileName = prefix + user.getId() + ".jpg";
         return  s3Service.uploadFile(imageService.getInputStream(jpgImage, "jpg"), fileName, "image");
+    }
+
+    public Usuario findByEmail(String email) {
+        UserSS user = UserService.authenticated();
+        if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+            throw new AuthorizationException("Acesso negado");
+        }
+
+        Usuario obj = repository.findByEmail(email);
+        if (obj == null) {
+            throw new ObjectNotFoundException(
+                    "Objeto não encontrado! Id: " + user.getId() + ", Tipo: " + Usuario.class.getName());
+        }
+        return obj;
     }
 }
