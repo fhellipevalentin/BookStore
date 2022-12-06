@@ -15,7 +15,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://localhost:8100")
 @RestController
 @RequestMapping("/api/categorias")
 public class CategoriaController {
